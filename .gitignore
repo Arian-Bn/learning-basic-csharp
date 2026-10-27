@@ -1,0 +1,33 @@
+# ==============================================================================
+# OFFICIAL .NET / VISUAL STUDIO GITIGNORE TEMPLATE
+# ==============================================================================
+
+# Core .NET compilation outputs (Crucial for blocking local build noise)
+bin/
+obj/
+/bin
+/obj
+
+# User-specific project settings and local caches
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# IDE configuration folders (VS Code, JetBrains Rider, and Visual Studio)
+.vscode/
+.idea/
+*.ntvs*
+*.njsproj
+
+# Log files, crash dumps, and build diagnostics
+*.log
+*.tlog
+*.log.*
+App_Data/*.ldf
+App_Data/*.mdf
+
+# Operating System specific files (Linux / Windows artifact protection)
+.DS_Store
+Thumbs.db
