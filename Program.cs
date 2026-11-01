@@ -1,52 +1,142 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net.Http.Headers;
+using System.Security.AccessControl;
+
 
 while (true)
 {
-    Console.WriteLine("Enter your choice(-1 to exit):");
-    Console.WriteLine("1. Show the message");
-    Console.WriteLine("2. Show the sum");
-
-    string? choiceFirst = Console.ReadLine();
-
-    if (string.IsNullOrWhiteSpace(choiceFirst))
-    {
-        Console.WriteLine("\nYot entered nothing! Please select an option.\n");
-        continue;
-    }
+    Console.WriteLine("=== C# LEARNING BASICS MENU ===");
+    Console.WriteLine("1. Show Project Info");
+    Console.WriteLine("2. Run Calculation (Multiplication)");
+    Console.WriteLine("3. Run Password Analyzer");
+    Console.WriteLine("4. Run Array Operation (Sum & Max)");
+    Console.WriteLine("5. Run List<T> Demonstration");
+    Console.WriteLine("-1. Exit program");
+    Console.WriteLine("\nEnter your choice: ");
     
-    if (!int.TryParse(choiceFirst, out int choice))
+    string? input = Console.ReadLine();
+
+    // Validation: check for empty input
+    if (string.IsNullOrWhiteSpace(input))
     {
-        Console.WriteLine("\nInvalid input! Please enter a valid number.\n");
+        Console.WriteLine("\n[ERROR] You entered nothing! Please select an option.\n");
         continue;
     }
 
+    // Validation: check if the input is a valid number   
+    if (!int.TryParse(input, out int choice))
+    {
+        Console.WriteLine("\n[ERROR] Invalid input! Please enter a valid number.\n");
+        continue;
+    }
+
+    // Menu selection handling
     switch (choice)
     {
         case -1:
-            Console.WriteLine("\nYou have exited! Have a good day");
+            Console.WriteLine("\nYou have exiting the program! Have a grate day.");
             return;
         case 1:
-            PrintInf();
+            ShowProjectInfo();
             break;
         case 2:
-            MultiFun();
+            ExecuteMultiplication();
+            break;
+
+        case 3:
+            RunPasswordAnalyzer();
+            break;
+
+        case 4:
+            RunArrayOperations();
+            break;
+
+        case 5:
+            RunListDemo();
             break;
     
         default:
-            Console.WriteLine("\nInvalid choice! Try again.\n");
+            Console.WriteLine("\n[ERROR] Invalid choice! Please try again.\n");
             break;
+    }
+
+    Console.WriteLine("\nPress any key to continue...");
+    Console.ReadKey();
+    Console.Clear();
+}
+
+// --- SEPARATE STRUCTURED METHODS ---
+
+void ShowProjectInfo()
+{
+    Console.WriteLine("\n--- PROJECT INFORMATION ---");
+    Console.WriteLine("Project Name: Learning Basic C#");
+    Console.WriteLine("Current Topics: Syntax Basic, Methods, Arrays, Lists");
+}
+
+void ExecuteMultiplication()
+{
+    int number1 = 20;
+    int number2 = 30;
+
+    Console.WriteLine($"\n--- CALCULATION ---");
+    Console.WriteLine($"Multiplication Result ({number1} * {number2} = {number1 * number2})");
+}
+
+void RunPasswordAnalyzer()
+{
+    Console.WriteLine("\n--- PASSWORD ANALYZER ---");
+    string[] testPasswords = {"", "123", "ValidPassword123"};
+
+    for (int i = 0; i < testPasswords.Length; i++)
+    {
+        string password = testPasswords[i];
+        Console.Write($"Password [{password}]: ");
+
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            Console.WriteLine("FAIL -> Password cannot be empty!");
+        }
+        else if (password.Length < 6)
+        {
+            Console.WriteLine("FAIL -> Password is too short!");
+        }
+        else
+        {
+            Console.WriteLine("SUCCESS -> Password accepted!");
+        }
     }
 }
 
-void PrintInf()
+void RunArrayOperations()
 {
-    Console.WriteLine("\n\nProject Name: Learning Basics C#");
-    Console.WriteLine("Current Topic: C# Basics and Types\n\n\n");
+    Console.WriteLine("\n--- ARRAY OPERATIONS ---");
+    int[] numbers = {50, -10, 0, -25, 30};
+
+    int max = numbers[0];
+    int sum = 0;
+
+    Console.Write("Array elements: ");
+    for (int i = 0; i < numbers.Length; i++)
+    {
+        Console.Write($"{numbers[i]}\t");
+        if (numbers[i] > max) max = numbers[i];
+        sum += numbers[i];
+    }
+
+    Console.WriteLine($"\nMaximum value: {max}");
+    Console.WriteLine($"Sum of elements: {sum}");
 }
 
-void MultiFun()
+void RunListDemo()
 {
-    int x1 = 20;
-    int x2 = 30;
-    Console.WriteLine($"\n\nCalculation Result ({x1} * {x2}) = {x1 * x2}\n\n");
+    Console.WriteLine("\n--- LIST<T> DEMO ---");
+    List<string> tasks = new List<string> {"Learn C#", "Review resume", "Buy milk"};
+
+    Console.WriteLine($"List size: {tasks.Count} element(s).");
+    for (int i = 0; i < tasks.Count; i++)
+    {
+        Console.WriteLine($"Task [{i + 1}]: {tasks[i]}");
+    }
 }

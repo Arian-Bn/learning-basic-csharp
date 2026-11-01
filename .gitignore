@@ -31,3 +31,9 @@ App_Data/*.mdf
 # Operating System specific files (Linux / Windows artifact protection)
 .DS_Store
 Thumbs.db
+
+# Tool outputs and reports (Repomix)
+repomix-output.xml
+
+#Temporary text files for notes
+kod.txt
