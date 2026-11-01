@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
-using System.Security.AccessControl;
-
 
 while (true)
 {
@@ -35,7 +32,7 @@ while (true)
     switch (choice)
     {
         case -1:
-            Console.WriteLine("\nYou have exiting the program! Have a grate day.");
+            Console.WriteLine("\nYou have exited the program! Have a great day.");
             return;
         case 1:
             ShowProjectInfo();
@@ -81,7 +78,7 @@ void ExecuteMultiplication()
     int number2 = 30;
 
     Console.WriteLine($"\n--- CALCULATION ---");
-    Console.WriteLine($"Multiplication Result ({number1} * {number2} = {number1 * number2})");
+    Console.WriteLine($"Multiplication Result ({number1} * {number2}) = {number1 * number2}");
 }
 
 void RunPasswordAnalyzer()
