@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 
 while (true)
 {
@@ -9,6 +10,7 @@ while (true)
     Console.WriteLine("3. Run Password Analyzer");
     Console.WriteLine("4. Run Array Operation (Sum & Max)");
     Console.WriteLine("5. Run List<T> Demonstration");
+    Console.WriteLine("6. Run Array input");
     Console.WriteLine("-1. Exit program");
     Console.WriteLine("\nEnter your choice: ");
     
@@ -51,6 +53,10 @@ while (true)
 
         case 5:
             RunListDemo();
+            break;
+
+        case 6:
+            RunArrayInput();
             break;
     
         default:
@@ -136,4 +142,58 @@ void RunListDemo()
     {
         Console.WriteLine($"Task [{i + 1}]: {tasks[i]}");
     }
+}
+
+void RunArrayInput()
+{
+    int size;
+
+    Console.Write("Please enter the size of the array: ");
+    if (!int.TryParse(Console.ReadLine(), out size) || size < 0)
+    {
+
+        Console.WriteLine("[ERROR] Invalid input. Size must be a non-negative integer.");
+        return;
+    }
+
+    int[] inputElements = new int[size];
+
+    Console.WriteLine("Please enter the elements:");
+    for (int i = 0; i < size; i++)
+    {
+        Console.Write($"[{i + 1}]: ");
+        
+        if (!int.TryParse(Console.ReadLine(), out inputElements[i]))
+        {
+            Console.WriteLine("[ERROR] Invalid number. Setting element to 0.");
+            inputElements[i] = 0;
+        }
+    }
+
+    Console.Write("Sum of elements in the array is: ");
+    Console.WriteLine(CalculateSum(inputElements));
+}
+
+int CalculateSum(int[] numbers)
+{
+    // 1. Check for null input
+    if (numbers == null)
+    {
+        Console.WriteLine("[WARN] Array is null.");
+        return 0;
+    }
+
+    // 2. Check for an empty array
+    if (numbers.Length == 0)
+    {
+        return 0;
+    }
+
+    int sum = 0;
+    for (int i = 0; i < numbers.Length; i++)
+    {
+        sum += numbers[i];
+    }
+
+    return sum;
 }
