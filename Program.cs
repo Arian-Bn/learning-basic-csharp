@@ -8,7 +8,7 @@ while (true)
     Console.WriteLine("1. Show Project Info");
     Console.WriteLine("2. Run Calculation (Multiplication)");
     Console.WriteLine("3. Run Password Analyzer");
-    Console.WriteLine("4. Run Array Operation (Sum & Max)");
+    Console.WriteLine("4. Run Array Operation (Sum & Max & Search)");
     Console.WriteLine("5. Run List<T> Demonstration");
     Console.WriteLine("6. Run Array input");
     Console.WriteLine("-1. Exit program");
@@ -130,6 +130,23 @@ void RunArrayOperations()
 
     Console.WriteLine($"\nMaximum value: {max}");
     Console.WriteLine($"Sum of elements: {sum}");
+
+    Console.Write("\nEnter a number to find its index: ");
+    if (!int.TryParse(Console.ReadLine(), out int target))
+    {
+        Console.WriteLine("[ERROR] Invalid number.");
+        return;
+    }
+
+    int foundIndex = foundElementIndex(numbers, target);
+    if (foundIndex == -1)
+    {
+        Console.WriteLine($"Element {target} not found in the array.");
+    } 
+    else
+    {
+        Console.WriteLine($"Element {target} found at index: {foundIndex}");
+    }
 }
 
 void RunListDemo()
@@ -196,4 +213,14 @@ int CalculateSum(int[] numbers)
     }
 
     return sum;
+}
+
+int foundElementIndex (int[] numbers, int target)
+{
+    for (int i = 0; i < numbers.Length; i++)
+    {
+        if (numbers[i] == target) return i;
+    }
+
+    return -1;
 }
