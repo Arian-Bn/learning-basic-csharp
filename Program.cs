@@ -138,7 +138,7 @@ void RunArrayOperations()
         return;
     }
 
-    int foundIndex = foundElementIndex(numbers, target);
+    int foundIndex = FoundElementIndex(numbers, target);
     if (foundIndex == -1)
     {
         Console.WriteLine($"Element {target} not found in the array.");
@@ -215,8 +215,12 @@ int CalculateSum(int[] numbers)
     return sum;
 }
 
-int foundElementIndex (int[] numbers, int target)
+int FoundElementIndex (int[] numbers, int target)
 {
+    if (numbers == null) return -1;
+
+    if (numbers.Length == 0) return -1;
+
     for (int i = 0; i < numbers.Length; i++)
     {
         if (numbers[i] == target) return i;
