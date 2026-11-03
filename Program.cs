@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 
 while (true)
 {
@@ -11,6 +10,7 @@ while (true)
     Console.WriteLine("4. Run Array Operation (Sum & Max & Search)");
     Console.WriteLine("5. Run List<T> Demonstration");
     Console.WriteLine("6. Run Array input");
+    Console.WriteLine("7. Run Shopping List");
     Console.WriteLine("-1. Exit program");
     Console.WriteLine("\nEnter your choice: ");
     
@@ -59,6 +59,10 @@ while (true)
             RunArrayInput();
             break;
     
+        case 7:
+            RunShoppingList();
+            break;
+
         default:
             Console.WriteLine("\n[ERROR] Invalid choice! Please try again.\n");
             break;
@@ -227,4 +231,99 @@ int FoundElementIndex (int[] numbers, int target)
     }
 
     return -1;
+}
+
+void RunShoppingList()
+{
+    List<string> shoppingList = new List<string>();
+
+    while (true)
+    {
+        Console.WriteLine("\n--- SHOPPING LIST MENU ---");
+        Console.WriteLine("1. View list");
+        Console.WriteLine("2. Add item");
+        Console.WriteLine("3. Delete item");
+        Console.WriteLine("4. Return to Main Menu");
+        Console.Write("Select an action: ");
+
+        if (!int.TryParse(Console.ReadLine(), out int action))
+        {
+            Console.WriteLine("[ERROR] Invalid choice. Please enter a number.");
+            continue;
+        }
+
+        if (action == 4) break;
+
+        switch (action)
+        {
+            case 1:
+                Console.WriteLine("\n--- YOUR SHOPPING LIST ---");
+                if (shoppingList.Count == 0)
+                {
+                    Console.WriteLine("Your list is empty");
+                }
+                else
+                {
+                    for (int i = 0; i < shoppingList.Count; i++)
+                    {
+                        Console.WriteLine($"[{i + 1}] {shoppingList[i]}");
+                    }
+                }
+                break;
+
+            case 2:
+                Console.Write("Enter item name to add: ");
+                string? itemToAdd = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(itemToAdd))
+                {
+                    Console.WriteLine("[ERROR] Item name cannot be empty.");
+                }
+                else
+                {
+                    shoppingList.Add(itemToAdd);
+                    Console.WriteLine($"{itemToAdd}  successfully added.");
+                }
+                break;
+
+            case 3:
+                Console.WriteLine("\n--- DELETE ITEM ---");
+
+                if (shoppingList.Count == 0)
+                {
+                    Console.WriteLine("[ERROR] Nothing to delete. List is empty.");
+                    break;
+                }
+
+                Console.Write("Enter the item number to delete: ");
+                if (!int.TryParse(Console.ReadLine(), out int displayIndex))
+                {
+                    Console.WriteLine("[ERROR] Please enter a valid number.");
+                    break;
+                }
+
+                // Convert user 1-based index index back to C# 0-based index
+                int actualIndex = displayIndex - 1;
+
+                if (actualIndex < 0 || actualIndex >= shoppingList.Count)
+                {
+                    Console.WriteLine($"[ERROR] Invalid index. Choose a number between 1 and {shoppingList.Count}.");
+                }
+                else
+                {
+                    string removeItem = shoppingList[actualIndex];
+                    shoppingList.RemoveAt(actualIndex);
+                    Console.WriteLine($"'{removeItem}' successfully removed.");
+                }
+                break;
+
+            default:
+            Console.WriteLine("[ERROR] Invalid choice. Please try again.");
+            break;
+
+        }
+        
+      
+    }
+
 }
