@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.Marshalling;
 
 while (true)
 {
@@ -11,6 +13,7 @@ while (true)
     Console.WriteLine("5. Run List<T> Demonstration");
     Console.WriteLine("6. Run Array input");
     Console.WriteLine("7. Run Shopping List");
+    Console.WriteLine("8. Run Phone Book");
     Console.WriteLine("-1. Exit program");
     Console.WriteLine("\nEnter your choice: ");
     
@@ -61,6 +64,10 @@ while (true)
     
         case 7:
             RunShoppingList();
+            break;
+
+        case 8:
+            RunPhoneBook();
             break;
 
         default:
@@ -326,4 +333,91 @@ void RunShoppingList()
       
     }
 
+}
+
+void RunPhoneBook()
+{
+    // Initialize an empty dictionary where Key is Name and Value is Phone Number
+    Dictionary<string, string> PhoneBook = new Dictionary<string, string>(){};
+
+    while (true)
+    {
+        Console.WriteLine("\n--- PHONE BOOK MENU ---");
+        Console.WriteLine("1. Add contact");
+        Console.WriteLine("2. Find contact");
+        Console.WriteLine("3. Exit");
+        Console.Write("Select an action: ");
+
+        string? choiceClient = Console.ReadLine();
+        int choiceNum;
+
+        // Validate: check for empty input or failed parsing
+        if (string.IsNullOrWhiteSpace(choiceClient) || !int.TryParse(choiceClient, out choiceNum))
+        {
+            Console.WriteLine("[ERROR] Invalid choise. Try again(1 or 2 or 3).");
+            continue;
+        }
+
+        if (choiceNum == 3) break;
+
+        switch(choiceNum)
+        {
+            case 1:
+                Console.Write("Please enter name of contact: ");
+                string? name = Console.ReadLine();
+
+                // Validation name and prevent duplicate keys
+                if (string.IsNullOrWhiteSpace(name) || PhoneBook.ContainsKey(name))
+                {
+                    Console.WriteLine("[ERROR] Invalid name or contact already exists.");
+                    break;
+                }
+                
+                Console.Write("Enter phone number: ");
+                string? phoneNumber = Console.ReadLine();
+                    
+                if (string.IsNullOrWhiteSpace(phoneNumber))
+                {
+                    Console.WriteLine("[Error] Invalid phone number.");
+                    break;
+                }
+
+                // Safely add the unique pair to the dictionary
+                if (PhoneBook.TryAdd(name, phoneNumber)) 
+                {
+                    Console.WriteLine("Contact added to phone book!");                        
+                }
+                else
+                {
+                    Console.WriteLine("[ERROR] Contact could not be added.");
+                }
+                break;
+
+            case 2:
+                Console.Write("Enter name of contact to search: ");
+                string? nameSearch = Console.ReadLine();
+                
+                if (string.IsNullOrWhiteSpace(nameSearch))
+                {
+                    Console.WriteLine("[ERROR] Invalid name.");
+                    break;
+                }
+                
+                // Safely retrieve value by key using TryGetValue to prevent crashes
+                if (PhoneBook.TryGetValue(nameSearch, out string? numberSearch))
+                {
+                    Console.WriteLine($"Found -> {nameSearch}: {numberSearch}");
+                }
+                else
+                {
+                    Console.WriteLine($"Contact '{nameSearch}' does not exist.");
+                }
+                break;
+
+            default:
+            Console.WriteLine("[ERROR] Invalid choice. Please select 1, 2, or 3.");
+            break;           
+        }
+       
+    }
 }
