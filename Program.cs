@@ -14,9 +14,10 @@ while (true)
     Console.WriteLine("6. Run Array input");
     Console.WriteLine("7. Run Shopping List");
     Console.WriteLine("8. Run Phone Book");
+    Console.WriteLine("9. Run Chracter Frequency Count");
     Console.WriteLine("-1. Exit program");
     Console.WriteLine("\nEnter your choice: ");
-    
+
     string? input = Console.ReadLine();
 
     // Validation: check for empty input
@@ -61,13 +62,17 @@ while (true)
         case 6:
             RunArrayInput();
             break;
-    
+
         case 7:
             RunShoppingList();
             break;
 
         case 8:
             RunPhoneBook();
+            break;
+
+        case 9:
+            RunCountCharacterFrequency();
             break;
 
         default:
@@ -101,7 +106,7 @@ void ExecuteMultiplication()
 void RunPasswordAnalyzer()
 {
     Console.WriteLine("\n--- PASSWORD ANALYZER ---");
-    string[] testPasswords = {"", "123", "ValidPassword123"};
+    string[] testPasswords = { "", "123", "ValidPassword123" };
 
     for (int i = 0; i < testPasswords.Length; i++)
     {
@@ -126,7 +131,7 @@ void RunPasswordAnalyzer()
 void RunArrayOperations()
 {
     Console.WriteLine("\n--- ARRAY OPERATIONS ---");
-    int[] numbers = {50, -10, 0, -25, 30};
+    int[] numbers = { 50, -10, 0, -25, 30 };
 
     int max = numbers[0];
     int sum = 0;
@@ -153,7 +158,7 @@ void RunArrayOperations()
     if (foundIndex == -1)
     {
         Console.WriteLine($"Element {target} not found in the array.");
-    } 
+    }
     else
     {
         Console.WriteLine($"Element {target} found at index: {foundIndex}");
@@ -163,7 +168,7 @@ void RunArrayOperations()
 void RunListDemo()
 {
     Console.WriteLine("\n--- LIST<T> DEMO ---");
-    List<string> tasks = new List<string> {"Learn C#", "Review resume", "Buy milk"};
+    List<string> tasks = new List<string> { "Learn C#", "Review resume", "Buy milk" };
 
     Console.WriteLine($"List size: {tasks.Count} element(s).");
     for (int i = 0; i < tasks.Count; i++)
@@ -190,7 +195,7 @@ void RunArrayInput()
     for (int i = 0; i < size; i++)
     {
         Console.Write($"[{i + 1}]: ");
-        
+
         if (!int.TryParse(Console.ReadLine(), out inputElements[i]))
         {
             Console.WriteLine("[ERROR] Invalid number. Setting element to 0.");
@@ -226,7 +231,7 @@ int CalculateSum(int[] numbers)
     return sum;
 }
 
-int FoundElementIndex (int[] numbers, int target)
+int FoundElementIndex(int[] numbers, int target)
 {
     if (numbers == null) return -1;
 
@@ -325,12 +330,12 @@ void RunShoppingList()
                 break;
 
             default:
-            Console.WriteLine("[ERROR] Invalid choice. Please try again.");
-            break;
+                Console.WriteLine("[ERROR] Invalid choice. Please try again.");
+                break;
 
         }
-        
-      
+
+
     }
 
 }
@@ -338,7 +343,7 @@ void RunShoppingList()
 void RunPhoneBook()
 {
     // Initialize an empty dictionary where Key is Name and Value is Phone Number
-    Dictionary<string, string> PhoneBook = new Dictionary<string, string>(){};
+    Dictionary<string, string> PhoneBook = new Dictionary<string, string>() { };
 
     while (true)
     {
@@ -360,7 +365,7 @@ void RunPhoneBook()
 
         if (choiceNum == 3) break;
 
-        switch(choiceNum)
+        switch (choiceNum)
         {
             case 1:
                 Console.Write("Please enter name of contact: ");
@@ -372,10 +377,10 @@ void RunPhoneBook()
                     Console.WriteLine("[ERROR] Invalid name or contact already exists.");
                     break;
                 }
-                
+
                 Console.Write("Enter phone number: ");
                 string? phoneNumber = Console.ReadLine();
-                    
+
                 if (string.IsNullOrWhiteSpace(phoneNumber))
                 {
                     Console.WriteLine("[Error] Invalid phone number.");
@@ -383,9 +388,9 @@ void RunPhoneBook()
                 }
 
                 // Safely add the unique pair to the dictionary
-                if (PhoneBook.TryAdd(name, phoneNumber)) 
+                if (PhoneBook.TryAdd(name, phoneNumber))
                 {
-                    Console.WriteLine("Contact added to phone book!");                        
+                    Console.WriteLine("Contact added to phone book!");
                 }
                 else
                 {
@@ -396,13 +401,13 @@ void RunPhoneBook()
             case 2:
                 Console.Write("Enter name of contact to search: ");
                 string? nameSearch = Console.ReadLine();
-                
+
                 if (string.IsNullOrWhiteSpace(nameSearch))
                 {
                     Console.WriteLine("[ERROR] Invalid name.");
                     break;
                 }
-                
+
                 // Safely retrieve value by key using TryGetValue to prevent crashes
                 if (PhoneBook.TryGetValue(nameSearch, out string? numberSearch))
                 {
@@ -415,9 +420,45 @@ void RunPhoneBook()
                 break;
 
             default:
-            Console.WriteLine("[ERROR] Invalid choice. Please select 1, 2, or 3.");
-            break;           
+                Console.WriteLine("[ERROR] Invalid choice. Please select 1, 2, or 3.");
+                break;
         }
-       
+
+    }
+}
+
+void RunCountCharacterFrequency()
+{
+    Console.WriteLine("\n--- CHARACTER FREQUENCY COUNT ---");
+    Console.Write("Enter a string: ");
+    string? input = Console.ReadLine();
+
+    if (string.IsNullOrWhiteSpace(input))
+    {
+        Console.WriteLine("[ERROR] Input cannot be empty.");
+        return;
+    }
+
+    // 1. Initialize the dictionary
+    Dictionary<char, int> charCount = new Dictionary<char, int>();
+
+    // 2. Loop through each character in the string
+    foreach (char ch in input)
+    {
+        if (charCount.ContainsKey(ch))
+        {
+            charCount[ch]++;
+        }
+        else
+        {
+            charCount.TryAdd(ch, 1);
+        }
+    }
+
+    // 3. Print the results
+    Console.WriteLine("/nCharacter frequencies: ");
+    foreach (var pair in charCount)
+    {
+        Console.WriteLine($"[{pair.Key}]: {pair.Value} time(s)");
     }
 }
