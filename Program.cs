@@ -456,7 +456,7 @@ void RunCountCharacterFrequency()
     }
 
     // 3. Print the results
-    Console.WriteLine("/nCharacter frequencies: ");
+    Console.WriteLine("\nCharacter frequencies: ");
     foreach (var pair in charCount)
     {
         Console.WriteLine($"[{pair.Key}]: {pair.Value} time(s)");
