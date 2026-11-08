@@ -15,6 +15,7 @@ while (true)
     Console.WriteLine("7. Run Shopping List");
     Console.WriteLine("8. Run Phone Book");
     Console.WriteLine("9. Run Chracter Frequency Count");
+    Console.WriteLine("10. Run Object Phone Book (List<Contact>)");
     Console.WriteLine("-1. Exit program");
     Console.WriteLine("\nEnter your choice: ");
 
@@ -73,6 +74,10 @@ while (true)
 
         case 9:
             RunCountCharacterFrequency();
+            break;
+
+        case 10:
+            RunObjPhoneBook();
             break;
 
         default:
@@ -460,5 +465,67 @@ void RunCountCharacterFrequency()
     foreach (var pair in charCount)
     {
         Console.WriteLine($"[{pair.Key}]: {pair.Value} time(s)");
+    }
+}
+
+void RunObjPhoneBook()
+{
+    List<Contact> objPhoneBook = new List<Contact>();
+
+    while (true)
+    {
+        Console.WriteLine("\n--- PHONE BOOK MENU ---");
+        Console.WriteLine("1. Add contact");
+        Console.WriteLine("2. Find contact");
+        Console.WriteLine("3. Exit");
+        Console.Write("Select an action: ");
+
+        string? choice = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(choice) || !int.TryParse(choice, out int input))
+        {
+            Console.WriteLine($"[ERROR] Invalid choise. Try again(1 or 2 or 3).");
+            continue;
+        }
+
+        if (input == 3) break;
+
+        switch (input)
+        {
+            case 1:
+                Console.Write("Please enter name of contact: ");
+                string? name = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    Console.WriteLine("[ERROR] Invalid name.");
+                    break;
+                }
+
+                Console.Write("Enter phone number: ");
+                string? phoneNumber = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(phoneNumber))
+                {
+                    Console.WriteLine("[ERROR] Invalid phone number.");
+                    break;
+                }
+
+                Contact newContact = new(name, phoneNumber);
+                objPhoneBook.Add(newContact);
+                Console.WriteLine("New contact was added successfully.");
+                break;
+        }
+    }
+}
+
+class Contact
+{
+    public string Name { get; set; }
+    public string PhoneNumber { get; set; }
+
+    public Contact(string name, string phoneNumber)
+    {
+        this.Name = name;
+        this.PhoneNumber = phoneNumber;
     }
 }
