@@ -476,18 +476,19 @@ void RunObjPhoneBook()
     {
         Console.WriteLine("\n--- PHONE BOOK MENU ---");
         Console.WriteLine("1. Add contact");
-        Console.WriteLine("2. Find contact");
-        Console.WriteLine("3. Exit");
+        Console.WriteLine("2. Show all contacts");
+        Console.WriteLine("3. Find contact");
+        Console.WriteLine("4. Exit");
         Console.Write("Select an action: ");
 
         string? choice = Console.ReadLine();
         if (string.IsNullOrWhiteSpace(choice) || !int.TryParse(choice, out int input))
         {
-            Console.WriteLine($"[ERROR] Invalid choise. Try again(1 or 2 or 3).");
+            Console.WriteLine($"[ERROR] Invalid choise. Try again(1 or 2 or 3 or 4).");
             continue;
         }
 
-        if (input == 3) break;
+        if (input == 4) break;
 
         switch (input)
         {
@@ -501,6 +502,21 @@ void RunObjPhoneBook()
                     break;
                 }
 
+
+                bool foundName = false;
+                foreach (var nameSearch in objPhoneBook)
+                {
+                    if (nameSearch.Name == name)
+                    {
+                        Console.WriteLine("[Error] Name contacts alreade existed!");
+                        foundName = true;
+                        break;
+                    }
+                }
+
+                if (foundName) break;
+
+
                 Console.Write("Enter phone number: ");
                 string? phoneNumber = Console.ReadLine();
 
@@ -513,6 +529,48 @@ void RunObjPhoneBook()
                 Contact newContact = new(name, phoneNumber);
                 objPhoneBook.Add(newContact);
                 Console.WriteLine("New contact was added successfully.");
+                break;
+
+            case 2:
+                if (objPhoneBook.Count == 0)
+                {
+                    Console.WriteLine("List is empty.");
+                    break;
+                }
+
+                foreach (var contact in objPhoneBook)
+                {
+                    Console.WriteLine($"{contact.Name}: {contact.PhoneNumber}");
+                }
+
+                break;
+
+            case 3:
+                Console.Write("Enter name of contact: ");
+                string? nameContact = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(nameContact))
+                {
+                    Console.WriteLine("[ERROR] Invalid name.");
+                    break;
+                }
+
+                bool found = false;
+                foreach (var nameSearch in objPhoneBook)
+                {
+                    if (nameSearch.Name == nameContact)
+                    {
+                        Console.WriteLine($"Number: {nameSearch.PhoneNumber}");
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    Console.WriteLine($"\"{nameContact}\" is not found!");
+                }
+
                 break;
         }
     }
