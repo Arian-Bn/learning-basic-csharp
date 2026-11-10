@@ -16,6 +16,7 @@ while (true)
     Console.WriteLine("8. Run Phone Book");
     Console.WriteLine("9. Run Chracter Frequency Count");
     Console.WriteLine("10. Run Object Phone Book (List<Contact>)");
+    Console.WriteLine("11. Run Task Treacker");
     Console.WriteLine("-1. Exit program");
     Console.WriteLine("\nEnter your choice: ");
 
@@ -78,6 +79,10 @@ while (true)
 
         case 10:
             RunObjPhoneBook();
+            break;
+
+        case 11:
+            RunTaskTrackerDemo();
             break;
 
         default:
@@ -576,6 +581,50 @@ void RunObjPhoneBook()
     }
 }
 
+void RunTaskTrackerDemo()
+{
+    List<TodoTask> task = new List<TodoTask>();
+
+    TodoTask task1 = new TodoTask(1, "Buy milk");
+    task.Add(task1);
+    TodoTask task2 = new TodoTask(2, "Learn C#");
+    task.Add(task2);
+
+    Console.Write($"Id: 1\tTitle: ");
+    var res = FindById(task, 1);
+    if (res == null)
+    {
+        Console.WriteLine("Not found!");
+    }
+    else
+    {
+        Console.WriteLine(res);
+    }
+    Console.Write($"Id: 99\tTitle: ");
+    res = FindById(task, 99);
+    if (res == null)
+    {
+        Console.WriteLine("Not found!");
+    }
+    else
+    {
+        Console.WriteLine(res);
+    }
+}
+
+TodoTask? FindById(List<TodoTask> tasks, int id)
+{
+    foreach (var i in tasks)
+    {
+        if (i.Id == id)
+        {
+            return i;
+        }
+    }
+
+    return null;
+}
+
 class Contact
 {
     public string Name { get; set; }
@@ -585,5 +634,18 @@ class Contact
     {
         this.Name = name;
         this.PhoneNumber = phoneNumber;
+    }
+}
+
+class TodoTask
+{
+    public int Id { get; set; }
+    public string? Title { get; set; }
+    public bool IsCompleted { get; set; } = false;
+
+    public TodoTask(int id, string? title)
+    {
+        Id = id;
+        Title = title;
     }
 }
