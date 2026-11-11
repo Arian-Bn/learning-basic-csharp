@@ -583,32 +583,35 @@ void RunObjPhoneBook()
 
 void RunTaskTrackerDemo()
 {
-    List<TodoTask> task = new List<TodoTask>();
+    List<TodoTask> tasks = new List<TodoTask>();
 
     TodoTask task1 = new TodoTask(1, "Buy milk");
-    task.Add(task1);
+    tasks.Add(task1);
     TodoTask task2 = new TodoTask(2, "Learn C#");
-    task.Add(task2);
+    tasks.Add(task2);
 
     Console.Write($"Id: 1\tTitle: ");
-    var res = FindById(task, 1);
+    var res = FindById(tasks, 1);
     if (res == null)
     {
         Console.WriteLine("Not found!");
     }
     else
     {
-        Console.WriteLine(res);
+        Console.WriteLine(res.Title);
+        CompleteTask(tasks, 1);
     }
+    CompleteTask(tasks, 1);
     Console.Write($"Id: 99\tTitle: ");
-    res = FindById(task, 99);
+    res = FindById(tasks, 99);
     if (res == null)
     {
         Console.WriteLine("Not found!");
     }
     else
     {
-        Console.WriteLine(res);
+        Console.WriteLine(res.Title);
+        CompleteTask(tasks, 99);
     }
 }
 
@@ -623,6 +626,27 @@ TodoTask? FindById(List<TodoTask> tasks, int id)
     }
 
     return null;
+}
+
+void CompleteTask(List<TodoTask> tasks, int id)
+{
+    TodoTask? searchTask = FindById(tasks, id);
+    if (searchTask == null)
+    {
+        Console.WriteLine($"Task by {id} not found!");
+        return;
+    }
+    else if (searchTask.IsCompleted)
+    {
+        Console.WriteLine($"Task by {id} already is done!");
+        return;
+    }
+    else
+    {
+        searchTask.IsCompleted = true;
+        Console.WriteLine($"Task by {id} is done!");
+        return;
+    }
 }
 
 class Contact
