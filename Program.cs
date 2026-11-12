@@ -584,8 +584,36 @@ void RunObjPhoneBook()
 void RunTaskTrackerDemo()
 {
     TaskService service = new TaskService();
-    service.AddTask(1, "Bob");
-    //service.AddTask(2, "");
+    service.AddTask(1, "Buy milk");
+    service.AddTask(2, "Go to store");
+
+    List<TodoTask> listOfTasks = service.GetAllTasks();
+    Console.WriteLine("All tasks:");
+    foreach (var i in listOfTasks)
+    {
+        Console.WriteLine($"Id: {i.Id}\tTitle: {i.Title}\tStatus: {i.IsCompleted}");
+    }
+
+    service.CompleteTask(1);
+    foreach (var i in listOfTasks)
+    {
+        Console.WriteLine($"Id: {i.Id}\tTitle: {i.Title}\tStatus: {i.IsCompleted}");
+    }
+
+    service.CompleteTask(99);
+
+    try
+    {
+        service.AddTask(3, "");
+        foreach (var i in listOfTasks)
+        {
+            Console.WriteLine($"Id: {i.Id}\tTitle: {i.Title}\tStatus: {i.IsCompleted}");
+        }
+    }
+    catch (ArgumentException ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
 }
 
 class Contact
@@ -630,6 +658,10 @@ class TaskService
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new ArgumentException("[ERROR] Task title cannot be empty!");
+        }
+        else if (FindById(id) != null)
+        {
+            Console.WriteLine($"[ERROR] task by id {id} already exicted!");
         }
         else
         {
