@@ -583,70 +583,9 @@ void RunObjPhoneBook()
 
 void RunTaskTrackerDemo()
 {
-    List<TodoTask> tasks = new List<TodoTask>();
-
-    TodoTask task1 = new TodoTask(1, "Buy milk");
-    tasks.Add(task1);
-    TodoTask task2 = new TodoTask(2, "Learn C#");
-    tasks.Add(task2);
-
-    Console.Write($"Id: 1\tTitle: ");
-    var res = FindById(tasks, 1);
-    if (res == null)
-    {
-        Console.WriteLine("Not found!");
-    }
-    else
-    {
-        Console.WriteLine(res.Title);
-        CompleteTask(tasks, 1);
-    }
-    CompleteTask(tasks, 1);
-    Console.Write($"Id: 99\tTitle: ");
-    res = FindById(tasks, 99);
-    if (res == null)
-    {
-        Console.WriteLine("Not found!");
-    }
-    else
-    {
-        Console.WriteLine(res.Title);
-        CompleteTask(tasks, 99);
-    }
-}
-
-TodoTask? FindById(List<TodoTask> tasks, int id)
-{
-    foreach (var i in tasks)
-    {
-        if (i.Id == id)
-        {
-            return i;
-        }
-    }
-
-    return null;
-}
-
-void CompleteTask(List<TodoTask> tasks, int id)
-{
-    TodoTask? searchTask = FindById(tasks, id);
-    if (searchTask == null)
-    {
-        Console.WriteLine($"Task by {id} not found!");
-        return;
-    }
-    else if (searchTask.IsCompleted)
-    {
-        Console.WriteLine($"Task by {id} already is done!");
-        return;
-    }
-    else
-    {
-        searchTask.IsCompleted = true;
-        Console.WriteLine($"Task by {id} is done!");
-        return;
-    }
+    TaskService service = new TaskService();
+    service.AddTask(1, "Bob");
+    //service.AddTask(2, "");
 }
 
 class Contact
@@ -664,12 +603,75 @@ class Contact
 class TodoTask
 {
     public int Id { get; set; }
-    public string? Title { get; set; }
+    public string Title { get; set; }
     public bool IsCompleted { get; set; } = false;
 
-    public TodoTask(int id, string? title)
+    public TodoTask(int id, string title)
     {
         Id = id;
-        Title = title;
+
+        if (!string.IsNullOrWhiteSpace(title))
+        {
+            Title = title;
+        }
+        else
+        {
+            throw new ArgumentException("Title cannot be empty");
+        }
+    }
+}
+
+class TaskService
+{
+    private List<TodoTask> _tasks = new List<TodoTask>();
+
+    public void AddTask(int id, string? name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("[ERROR] Task title cannot be empty!");
+        }
+        else
+        {
+            _tasks.Add(new TodoTask(id, name));
+        }
+    }
+
+    public List<TodoTask> GetAllTasks()
+    {
+        return _tasks;
+    }
+    public TodoTask? FindById(int id)
+    {
+        foreach (var i in _tasks)
+        {
+            if (i.Id == id)
+            {
+                return i;
+            }
+        }
+
+        return null;
+    }
+
+    public void CompleteTask(int id)
+    {
+        TodoTask? searchTask = FindById(id);
+        if (searchTask == null)
+        {
+            Console.WriteLine($"Task by {id} not found!");
+            return;
+        }
+        else if (searchTask.IsCompleted)
+        {
+            Console.WriteLine($"Task by {id} already is done!");
+            return;
+        }
+        else
+        {
+            searchTask.IsCompleted = true;
+            Console.WriteLine($"Task by {id} is done!");
+            return;
+        }
     }
 }
