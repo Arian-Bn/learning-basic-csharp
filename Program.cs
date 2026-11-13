@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.Marshalling;
 
@@ -16,7 +17,7 @@ while (true)
     Console.WriteLine("8. Run Phone Book");
     Console.WriteLine("9. Run Chracter Frequency Count");
     Console.WriteLine("10. Run Object Phone Book (List<Contact>)");
-    Console.WriteLine("11. Run Task Treacker");
+    Console.WriteLine("11. Run Task Tracker");
     Console.WriteLine("-1. Exit program");
     Console.WriteLine("\nEnter your choice: ");
 
@@ -583,36 +584,95 @@ void RunObjPhoneBook()
 
 void RunTaskTrackerDemo()
 {
-    TaskService service = new TaskService();
-    service.AddTask(1, "Buy milk");
-    service.AddTask(2, "Go to store");
+    TaskService tasks = new TaskService();
 
-    List<TodoTask> listOfTasks = service.GetAllTasks();
-    Console.WriteLine("All tasks:");
-    foreach (var i in listOfTasks)
+    while (true)
     {
-        Console.WriteLine($"Id: {i.Id}\tTitle: {i.Title}\tStatus: {i.IsCompleted}");
-    }
+        Console.WriteLine("\n--- TASK SERVICE ---");
+        Console.WriteLine("1. Add Task");
+        Console.WriteLine("2. Show All");
+        Console.WriteLine("3. Complete Task");
+        Console.WriteLine("4. Delete Task");
+        Console.WriteLine("5. Exit");
+        Console.Write("Enter your choice: ");
 
-    service.CompleteTask(1);
-    foreach (var i in listOfTasks)
-    {
-        Console.WriteLine($"Id: {i.Id}\tTitle: {i.Title}\tStatus: {i.IsCompleted}");
-    }
-
-    service.CompleteTask(99);
-
-    try
-    {
-        service.AddTask(3, "");
-        foreach (var i in listOfTasks)
+        string? inputSt = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(inputSt) || !int.TryParse(inputSt, out int input))
         {
-            Console.WriteLine($"Id: {i.Id}\tTitle: {i.Title}\tStatus: {i.IsCompleted}");
+            Console.WriteLine("[ERROR] Invalid input.");
+            continue;
         }
-    }
-    catch (ArgumentException ex)
-    {
-        Console.WriteLine(ex.Message);
+
+        if (input == 5) break;
+
+        switch (input)
+        {
+            case 1:
+                Console.Write("Enter Id: ");
+                string? idTask = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(idTask) || !int.TryParse(idTask, out int id))
+                {
+                    Console.WriteLine("[ERROR] Invalid Id.");
+                    break;
+                }
+
+                Console.Write("Enter task: ");
+                string? textTask = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(textTask))
+                {
+                    Console.WriteLine("[ERROR] input is empty.");
+                    break;
+                }
+
+                tasks.AddTask(id, textTask);
+                break;
+
+            case 2:
+                var allTasks = tasks.GetAllTasks();
+
+                if (allTasks.Count == 0)
+                {
+                    Console.WriteLine("List is empty!");
+                    break;
+                }
+
+                foreach (var i in allTasks)
+                {
+                    Console.WriteLine($"Id: {i.Id}\tTask: {i.Title}\tStatus: {i.IsCompleted}");
+                }
+                break;
+
+            case 3:
+                Console.Write("Enter Id: ");
+
+                string? idCopm = Console.ReadLine();
+                if (string.IsNullOrEmpty(idCopm) || !int.TryParse(idCopm, out int taskId))
+                {
+                    Console.WriteLine("[ERROR] Invalid Id!");
+                    break;
+                }
+
+                tasks.CompleteTask(taskId);
+                break;
+
+            case 4:
+                Console.Write("Enter Id: ");
+
+                string? idDel = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(idDel) || !int.TryParse(idDel, out int delId))
+                {
+                    Console.WriteLine("[ERROR] Invalid id!");
+                    break;
+                }
+
+                tasks.DeleteTask(delId);
+                break;
+
+            default:
+                Console.WriteLine("[ERROR] Invalid input!");
+                break;
+        }
     }
 }
 
@@ -661,11 +721,12 @@ class TaskService
         }
         else if (FindById(id) != null)
         {
-            Console.WriteLine($"[ERROR] task by id {id} already exicted!");
+            Console.WriteLine($"[ERROR] Task with Id {id} already exists!");
         }
         else
         {
             _tasks.Add(new TodoTask(id, name));
+            Console.WriteLine("Task was added successfully!");
         }
     }
 
@@ -691,19 +752,33 @@ class TaskService
         TodoTask? searchTask = FindById(id);
         if (searchTask == null)
         {
-            Console.WriteLine($"Task by {id} not found!");
+            Console.WriteLine($"Task with Id {id} not found!");
             return;
         }
         else if (searchTask.IsCompleted)
         {
-            Console.WriteLine($"Task by {id} already is done!");
+            Console.WriteLine($"Task with Id {id} is already done!");
             return;
         }
         else
         {
             searchTask.IsCompleted = true;
-            Console.WriteLine($"Task by {id} is done!");
+            Console.WriteLine($"Task with Id {id} is done!");
             return;
+        }
+    }
+
+    public void DeleteTask(int id)
+    {
+        var resDel = FindById(id);
+        if (resDel != null)
+        {
+            _tasks.Remove(resDel);
+            Console.WriteLine($"Task with Id {id} was deleted successfully!");
+        }
+        else
+        {
+            Console.WriteLine($"Task with Id {id} does not exist!");
         }
     }
 }
