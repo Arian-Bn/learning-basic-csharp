@@ -13,7 +13,7 @@ A structured console application designed to practice core C# programming concep
 1. Ensure you have the [.NET SDK](https://microsoft.com) installed on your machine (tested on Arch Linux).
 2. Clone this repository:
    ```bash
-   git clone <https://github.com/Arian-Bn/learning-basic-csharp.git>
+   git clone https://github.com/Arian-Bn/learning-basic-csharp.git
    ```
 3. Navigate to the project directory and run the application:
    ```bash
