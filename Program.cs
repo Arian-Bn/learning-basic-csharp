@@ -646,14 +646,29 @@ void RunTaskTrackerDemo()
             case 3:
                 Console.Write("Enter Id: ");
 
-                string? idCopm = Console.ReadLine();
-                if (string.IsNullOrEmpty(idCopm) || !int.TryParse(idCopm, out int taskId))
+                string? idInput = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(idInput) || !int.TryParse(idInput, out int taskId))
                 {
                     Console.WriteLine("[ERROR] Invalid Id!");
                     break;
                 }
 
-                tasks.CompleteTask(taskId);
+                CompleteTaskResult result = tasks.CompleteTask(taskId);
+                switch (result)
+                {
+                    case CompleteTaskResult.NotFound:
+                        Console.WriteLine($"[ERROR] Task with Id {taskId} not found!");
+                        break;
+
+                    case CompleteTaskResult.AlreadyCompleted:
+                        Console.WriteLine($"[ERROR] Task with Id {taskId} is already done!");
+                        break;
+
+                    case CompleteTaskResult.Success:
+                        Console.WriteLine($"Task with Id {taskId} is done!");
+                        break;
+
+                }
                 break;
 
             case 4:
@@ -747,25 +762,17 @@ class TaskService
         return null;
     }
 
-    public void CompleteTask(int id)
+    public CompleteTaskResult CompleteTask(int id)
     {
         TodoTask? searchTask = FindById(id);
-        if (searchTask == null)
-        {
-            Console.WriteLine($"Task with Id {id} not found!");
-            return;
-        }
-        else if (searchTask.IsCompleted)
-        {
-            Console.WriteLine($"Task with Id {id} is already done!");
-            return;
-        }
-        else
-        {
-            searchTask.IsCompleted = true;
-            Console.WriteLine($"Task with Id {id} is done!");
-            return;
-        }
+
+        if (searchTask == null) return CompleteTaskResult.NotFound;
+
+        if (searchTask.IsCompleted) return CompleteTaskResult.AlreadyCompleted;
+
+        searchTask.IsCompleted = true;
+        return CompleteTaskResult.Success;
+
     }
 
     public void DeleteTask(int id)
@@ -781,4 +788,11 @@ class TaskService
             Console.WriteLine($"Task with Id {id} does not exist!");
         }
     }
+}
+
+enum CompleteTaskResult
+{
+    NotFound,
+    AlreadyCompleted,
+    Success
 }
