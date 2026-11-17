@@ -218,7 +218,7 @@ void RunArrayInput()
     Console.WriteLine(CalculateSum(inputElements));
 }
 
-int CalculateSum(int[] numbers)
+int CalculateSum(int[]? numbers)
 {
     // 1. Check for null input
     if (numbers == null)
@@ -728,7 +728,7 @@ class TaskService
 {
     private List<TodoTask> _tasks = new List<TodoTask>();
 
-    public void AddTask(int id, string? name)
+    public void AddTask(int id, string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -777,7 +777,7 @@ class TaskService
 
     public void DeleteTask(int id)
     {
-        var resDel = FindById(id);
+        TodoTask? resDel = FindById(id);
         if (resDel != null)
         {
             _tasks.Remove(resDel);
