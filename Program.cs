@@ -731,16 +731,17 @@ class TodoTask
 
     public TodoTask(int id, string title)
     {
+        if (id <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(id), "Task ID must be greater than zero.");
+        }
         Id = id;
 
-        if (!string.IsNullOrWhiteSpace(title))
+        if (string.IsNullOrWhiteSpace(title))
         {
-            Title = title;
+            throw new ArgumentException("Title cannot be empty", nameof(title));
         }
-        else
-        {
-            throw new ArgumentException("Title cannot be empty");
-        }
+        Title = title.Trim();
     }
 }
 
@@ -750,11 +751,6 @@ class TaskService
 
     public bool AddTask(int id, string name)
     {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentException("Task title cannot be empty!");
-        }
-
         if (FindById(id) != null)
         {
             return false;
