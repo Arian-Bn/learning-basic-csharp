@@ -621,11 +621,25 @@ void RunTaskTrackerDemo()
                 string? textTask = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(textTask))
                 {
-                    Console.WriteLine("[ERROR] input is empty.");
+                    Console.WriteLine("[ERROR] Input is empty.");
                     break;
                 }
 
-                tasks.AddTask(id, textTask);
+                try
+                {
+                    if (tasks.AddTask(id, textTask))
+                    {
+                        Console.WriteLine("Task was added successfully!");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[ERROR] Task with Id {id} already exists!");
+                    }
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine($"[ERROR] {ex.Message}");
+                }
                 break;
 
             case 2:
@@ -634,7 +648,6 @@ void RunTaskTrackerDemo()
                 if (allTasks.Count == 0)
                 {
                     Console.WriteLine("List is empty!");
-                    break;
                 }
 
                 foreach (var i in allTasks)
@@ -681,7 +694,14 @@ void RunTaskTrackerDemo()
                     break;
                 }
 
-                tasks.DeleteTask(delId);
+                if (tasks.DeleteTask(delId))
+                {
+                    Console.WriteLine($"Task with Id {delId} was deleted successfully!");
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] Task with Id {delId} does not exist!");
+                }
                 break;
 
             default:
@@ -728,21 +748,20 @@ class TaskService
 {
     private List<TodoTask> _tasks = new List<TodoTask>();
 
-    public void AddTask(int id, string name)
+    public bool AddTask(int id, string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException("[ERROR] Task title cannot be empty!");
+            throw new ArgumentException("Task title cannot be empty!");
         }
-        else if (FindById(id) != null)
+
+        if (FindById(id) != null)
         {
-            Console.WriteLine($"[ERROR] Task with Id {id} already exists!");
+            return false;
         }
-        else
-        {
-            _tasks.Add(new TodoTask(id, name));
-            Console.WriteLine("Task was added successfully!");
-        }
+
+        _tasks.Add(new TodoTask(id, name));
+        return true;
     }
 
     public List<TodoTask> GetAllTasks()
@@ -775,18 +794,16 @@ class TaskService
 
     }
 
-    public void DeleteTask(int id)
+    public bool DeleteTask(int id)
     {
         TodoTask? resDel = FindById(id);
         if (resDel != null)
         {
             _tasks.Remove(resDel);
-            Console.WriteLine($"Task with Id {id} was deleted successfully!");
+            return true;
         }
-        else
-        {
-            Console.WriteLine($"Task with Id {id} does not exist!");
-        }
+
+        return false;
     }
 }
 
