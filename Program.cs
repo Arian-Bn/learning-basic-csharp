@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.Marshalling;
+using System.Linq;
 
 while (true)
 {
@@ -15,7 +13,7 @@ while (true)
     Console.WriteLine("6. Run Array input");
     Console.WriteLine("7. Run Shopping List");
     Console.WriteLine("8. Run Phone Book");
-    Console.WriteLine("9. Run Chracter Frequency Count");
+    Console.WriteLine("9. Run Character Frequency Count");
     Console.WriteLine("10. Run Object Phone Book (List<Contact>)");
     Console.WriteLine("11. Run Task Tracker");
     Console.WriteLine("-1. Exit program");
@@ -593,7 +591,9 @@ void RunTaskTrackerDemo()
         Console.WriteLine("2. Show All");
         Console.WriteLine("3. Complete Task");
         Console.WriteLine("4. Delete Task");
-        Console.WriteLine("5. Exit");
+        Console.WriteLine("5. Show incomplete tasks");
+        Console.WriteLine("6. check if any completed tasks exist");
+        Console.WriteLine("7. Exit");
         Console.Write("Enter your choice: ");
 
         string? inputSt = Console.ReadLine();
@@ -603,7 +603,7 @@ void RunTaskTrackerDemo()
             continue;
         }
 
-        if (input == 5) break;
+        if (input == 7) break;
 
         switch (input)
         {
@@ -690,7 +690,7 @@ void RunTaskTrackerDemo()
                 string? idDel = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(idDel) || !int.TryParse(idDel, out int delId))
                 {
-                    Console.WriteLine("[ERROR] Invalid id!");
+                    Console.WriteLine("[ERROR] Invalid Id!");
                     break;
                 }
 
@@ -702,6 +702,30 @@ void RunTaskTrackerDemo()
                 {
                     Console.WriteLine($"[ERROR] Task with Id {delId} does not exist!");
                 }
+                break;
+
+            case 5:
+                var incompleteTasks = tasks.GetIncompleteTasks();
+                if (incompleteTasks.Count == 0)
+                {
+                    Console.WriteLine("You have no unfinished tasks.");
+                    break;
+                }
+
+                foreach (var task in incompleteTasks)
+                {
+                    Console.WriteLine($"ID: {task.Id}\tTitle: {task.Title}\tStatus: {task.IsCompleted}");
+                }
+                break;
+
+            case 6:
+                if (tasks.HasCompletedTasks())
+                {
+                    Console.WriteLine("Yes, you have completed tasks.");
+                    break;
+                }
+
+                Console.WriteLine("No, You don't have any completed tasks.");
                 break;
 
             default:
@@ -800,6 +824,16 @@ class TaskService
         }
 
         return false;
+    }
+
+    public List<TodoTask> GetIncompleteTasks()
+    {
+        return _tasks.Where(item => !item.IsCompleted).ToList();
+    }
+
+    public bool HasCompletedTasks()
+    {
+        return _tasks.Any(item => item.IsCompleted);
     }
 }
 
