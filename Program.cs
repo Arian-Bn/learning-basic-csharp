@@ -747,7 +747,7 @@ class Contact
     }
 }
 
-class TodoTask
+public class TodoTask
 {
     public int Id { get; set; }
     public string Title { get; set; }
@@ -769,7 +769,7 @@ class TodoTask
     }
 }
 
-class TaskService
+public class TaskService
 {
     private List<TodoTask> _tasks = new List<TodoTask>();
 
@@ -837,7 +837,7 @@ class TaskService
     }
 }
 
-enum CompleteTaskResult
+public enum CompleteTaskResult
 {
     NotFound,
     AlreadyCompleted,
