@@ -33,4 +33,29 @@ public class TaskServiceTests
         var service = new TaskService();
         Assert.Throws<ArgumentException>(() => service.AddTask(1, ""));
     }
+
+    [Fact]
+    public void FindById_ExistingId_ReturnsTask()
+    {
+        var service = new TaskService();
+        service.AddTask(1, "First task");
+        service.AddTask(2, "Second task");
+
+        TodoTask? task = service.FindById(2);
+
+        Assert.NotNull(task);
+        Assert.Equal(2, task.Id);
+        Assert.Equal("Second task", task.Title);
+    }
+
+    [Fact]
+    public void FindById_NonExistingId_ReturnsNull()
+    {
+        var service = new TaskService();
+        service.AddTask(1, "First task");
+
+        TodoTask? task = service.FindById(999);
+
+        Assert.Null(task);
+    }
 }
