@@ -24,6 +24,7 @@ public class TaskServiceTests
         service.AddTask(1, "First task");
 
         bool result = service.AddTask(1, "Second task");
+
         Assert.False(result);
     }
 
