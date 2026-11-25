@@ -59,4 +59,41 @@ public class TaskServiceTests
 
         Assert.Null(task);
     }
+
+    [Fact]
+    public void CompleteTask_ExistingUncompletedTask_ReturnsSuccessAndMarksCompleted()
+    {
+        var service = new TaskService();
+        service.AddTask(1, "First task");
+
+        CompleteTaskResult result = service.CompleteTask(1);
+
+        Assert.Equal(CompleteTaskResult.Success, result);
+        TodoTask? task = service.FindById(1);
+        Assert.NotNull(task);
+        Assert.True(task.IsCompleted);
+    }
+
+    [Fact]
+    public void CompleteTask_NonExistingId_ReturnsNotFound()
+    {
+        var service = new TaskService();
+        service.AddTask(1, "First task");
+
+        CompleteTaskResult result = service.CompleteTask(999);
+
+        Assert.Equal(CompleteTaskResult.NotFound, result);
+    }
+
+    [Fact]
+    public void CompleteTask_AlreadyCompletedTask_ReturnsAlreadyCompleted()
+    {
+        var service = new TaskService();
+        service.AddTask(1, "First task");
+        service.CompleteTask(1);
+
+        CompleteTaskResult result = service.CompleteTask(1);
+
+        Assert.Equal(CompleteTaskResult.AlreadyCompleted, result);
+    }
 }

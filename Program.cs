@@ -805,7 +805,7 @@ public class TaskService
     {
         TodoTask? searchTask = FindById(id);
 
-        if (searchTask == null) return CompleteTaskResult.NotFound;
+        if (searchTask is null) return CompleteTaskResult.NotFound;
 
         if (searchTask.IsCompleted) return CompleteTaskResult.AlreadyCompleted;
 
