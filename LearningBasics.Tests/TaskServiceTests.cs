@@ -147,4 +147,29 @@ public class TaskServiceTests
         Assert.Contains(result, t => t.Id == 3);
         Assert.DoesNotContain(result, t => t.Id == 2);
     }
+
+    [Fact]
+    public void HasCompletedTasks_WhenNoCompletedTasks_ReturnsFalse()
+    {
+        var service = new TaskService();
+        service.AddTask(1, "First task");
+        service.AddTask(2, "Second task");
+
+        bool result = service.HasCompletedTasks();
+
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void HasCompletedTasks_WhenAtLeastOneCompleted_ReturnsTrue()
+    {
+        var service = new TaskService();
+        service.AddTask(1, "First task");
+        service.AddTask(2, "Second task");
+        service.CompleteTask(2);
+
+        bool result = service.HasCompletedTasks();
+
+        Assert.True(result);
+    }
 }
