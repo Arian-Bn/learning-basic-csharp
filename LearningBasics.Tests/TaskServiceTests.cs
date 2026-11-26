@@ -96,4 +96,28 @@ public class TaskServiceTests
 
         Assert.Equal(CompleteTaskResult.AlreadyCompleted, result);
     }
+
+    [Fact]
+    public void DeleteTask_ExistingId_ReturnsTrueAndRemovesTask()
+    {
+        var service = new TaskService();
+        service.AddTask(1, "First task");
+        service.AddTask(2, "Second task");
+
+        bool result = service.DeleteTask(1);
+
+        Assert.True(result);
+        Assert.Null(service.FindById(1));
+    }
+
+    [Fact]
+    public void DeleteTask_NonExistingId_ReturnsFalse()
+    {
+        var service = new TaskService();
+        service.AddTask(1, "First task");
+
+        bool result = service.DeleteTask(999);
+
+        Assert.False(result);
+    }
 }
