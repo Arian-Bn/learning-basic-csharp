@@ -120,4 +120,31 @@ public class TaskServiceTests
 
         Assert.False(result);
     }
+
+    [Fact]
+    public void GetIncompleteTasks_WhenNoTasksExist_ReturnsEmptyList()
+    {
+        var service = new TaskService();
+
+        var result = service.GetIncompleteTasks();
+
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void GetIncompleteTasks_MixedTasks_ReturnsOnlyIncompleteTasks()
+    {
+        var service = new TaskService();
+        service.AddTask(1, "First task");
+        service.AddTask(2, "Second task");
+        service.AddTask(3, "Third task");
+        service.CompleteTask(2);
+
+        var result = service.GetIncompleteTasks();
+
+        Assert.Equal(2, result.Count);
+        Assert.Contains(result, t => t.Id == 1);
+        Assert.Contains(result, t => t.Id == 3);
+        Assert.DoesNotContain(result, t => t.Id == 2);
+    }
 }
