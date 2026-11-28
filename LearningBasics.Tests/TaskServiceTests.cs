@@ -28,11 +28,15 @@ public class TaskServiceTests
         Assert.False(result);
     }
 
-    [Fact]
-    public void AddTask_EmptyTitle_ThrowsArgumentException()
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData(null)]
+    public void AddTask_InvalidTitle_ThrowsArgumentException(string? invalidTitle)
     {
         var service = new TaskService();
-        Assert.Throws<ArgumentException>(() => service.AddTask(1, ""));
+
+        Assert.Throws<ArgumentException>(() => service.AddTask(1, invalidTitle!));
     }
 
     [Fact]
