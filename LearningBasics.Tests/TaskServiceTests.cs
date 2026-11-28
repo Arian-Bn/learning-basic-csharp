@@ -26,6 +26,9 @@ public class TaskServiceTests
         bool result = service.AddTask(1, "Second task");
 
         Assert.False(result);
+        var task = service.FindById(1);
+        Assert.NotNull(task);
+        Assert.Equal("First task", task.Title);
     }
 
     [Theory]
@@ -159,10 +162,23 @@ public class TaskServiceTests
         service.AddTask(1, "First task");
         service.AddTask(2, "Second task");
 
+
         bool result = service.HasCompletedTasks();
 
         Assert.False(result);
     }
+
+    [Fact]
+    public void HasCompletedTasks_WhenTaskIsEmpty_ReturnsFalse()
+    {
+        var service = new TaskService();
+
+
+        bool result = service.HasCompletedTasks();
+
+        Assert.False(result);
+    }
+
 
     [Fact]
     public void HasCompletedTasks_WhenAtLeastOneCompleted_ReturnsTrue()
